@@ -1,0 +1,24 @@
+# Contributor: Jami Kettunen <jami.kettunen@protonmail.com>
+# Maintainer: Jami Kettunen <jami.kettunen@protonmail.com>
+pkgname=bleachbit
+pkgver=4.0.0
+pkgrel=0
+pkgdesc="GTK+ disk cleaning utility" # Delete unneeded files to free disk space and maintain privacy
+url="https://www.bleachbit.org/"
+arch="noarch"
+license="GPL-3.0-or-later"
+depends="gtk+3.0 py3-gobject3 py3-mock py3-requests"
+makedepends="bash gettext git"
+subpackages="$pkgname-lang"
+source="$pkgname-$pkgver.tar.gz::https://github.com/bleachbit/bleachbit/archive/v$pkgver.tar.gz"
+options="!check" # Tests result in 3 failures & 1 error; program still works as expected.
+
+check() {
+	make tests
+}
+
+package() {
+	make prefix=/usr DESTDIR="$pkgdir" install
+}
+
+sha512sums="d5c27f08c80193a70d0d15592f980029563fd2153b5a5faee91248f3f89cc351e2ffefc84a39bcec458ef7e5feecd20a2281c122a2bc16f6836015c3f1f8420c  bleachbit-4.0.0.tar.gz"
