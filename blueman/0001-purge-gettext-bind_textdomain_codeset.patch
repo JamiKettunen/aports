@@ -1,0 +1,260 @@
+From b9f64acf4becce1c6a1fae8bd09c9739eec2791d Mon Sep 17 00:00:00 2001
+From: Jami Kettunen <jami.kettunen@protonmail.com>
+Date: Sun, 28 Jun 2020 23:38:24 +0300
+Subject: [PATCH] Comment out all instances of "bind_textdomain_codeset" in the
+ source
+
+This is needed as Alpine's version of Python doesn't (and won't) get
+compiled with gettext support.
+
+Command executed in source directory:
+
+  for f in $(grep -R --exclude-dir='.git' . -e 'bind_textdomain_codeset' | cut -d: -f1); do sed '/bind_textdomain_codeset/ s/^#*/#/' -i $f; done
+---
+ apps/blueman-assistant.in                | 4 ++--
+ blueman/gui/GsmSettings.py               | 4 ++--
+ blueman/gui/applet/PluginDialog.py       | 4 ++--
+ blueman/gui/manager/ManagerDeviceMenu.py | 4 ++--
+ blueman/main/Manager.py                  | 4 ++--
+ blueman/main/Sendto.py                   | 4 ++--
+ blueman/main/applet/BluezAgent.py        | 4 ++--
+ blueman/plugins/applet/NetUsage.py       | 4 ++--
+ blueman/plugins/manager/Notes.py         | 4 ++--
+ blueman/plugins/services/Network.py      | 4 ++--
+ blueman/plugins/services/Transfer.py     | 4 ++--
+ 11 files changed, 22 insertions(+), 22 deletions(-)
+
+diff --git a/apps/blueman-assistant.in b/apps/blueman-assistant.in
+index a93bc759..2879650c 100755
+--- a/apps/blueman-assistant.in
++++ b/apps/blueman-assistant.in
+@@ -4,7 +4,7 @@ import os
+ import sys
+ import signal
+ import logging
+-from locale import bind_textdomain_codeset
++#from locale import bind_textdomain_codeset
+ 
+ import gi
+ gi.require_version("Gtk", "3.0")
+@@ -59,7 +59,7 @@ class Assistant:
+ 
+         self.Builder = Gtk.Builder()
+         self.Builder.set_translation_domain("blueman")
+-        bind_textdomain_codeset("blueman", "UTF-8")
++#        bind_textdomain_codeset("blueman", "UTF-8")
+         self.Builder.add_from_file(UI_PATH + "/assistant.ui")
+         self.assistant = self.Builder.get_object("assistant")
+         self.assistant.set_title(_("Bluetooth Assistant"))
+diff --git a/blueman/gui/GsmSettings.py b/blueman/gui/GsmSettings.py
+index 3926c5e0..e124d404 100644
+--- a/blueman/gui/GsmSettings.py
++++ b/blueman/gui/GsmSettings.py
+@@ -1,5 +1,5 @@
+ # coding=utf-8
+-from locale import bind_textdomain_codeset
++#from locale import bind_textdomain_codeset
+ 
+ from blueman.main.Config import Config
+ from blueman.Constants import *
+@@ -18,7 +18,7 @@ def __init__(self, bd_address):
+ 
+         self.Builder = Gtk.Builder()
+         self.Builder.set_translation_domain("blueman")
+-        bind_textdomain_codeset("blueman", "UTF-8")
++#        bind_textdomain_codeset("blueman", "UTF-8")
+         self.Builder.add_from_file(UI_PATH + "/gsm-settings.ui")
+ 
+         gsm_grid = self.Builder.get_object("gsm_grid")
+diff --git a/blueman/gui/applet/PluginDialog.py b/blueman/gui/applet/PluginDialog.py
+index b5c21798..bf5d73b6 100644
+--- a/blueman/gui/applet/PluginDialog.py
++++ b/blueman/gui/applet/PluginDialog.py
+@@ -1,7 +1,7 @@
+ # coding=utf-8
+ import weakref
+ import logging
+-from locale import bind_textdomain_codeset
++#from locale import bind_textdomain_codeset
+ 
+ from blueman.Constants import *
+ from blueman.gui.GenericList import GenericList
+@@ -102,7 +102,7 @@ def __init__(self, applet):
+         self.applet = applet
+ 
+         self.Builder = Gtk.Builder(translation_domain="blueman")
+-        bind_textdomain_codeset("blueman", "UTF-8")
++#        bind_textdomain_codeset("blueman", "UTF-8")
+         self.Builder.add_from_file(UI_PATH + "/applet-plugins-widget.ui")
+ 
+         self.description = self.Builder.get_object("description")
+diff --git a/blueman/gui/manager/ManagerDeviceMenu.py b/blueman/gui/manager/ManagerDeviceMenu.py
+index a101d008..d3d452c1 100644
+--- a/blueman/gui/manager/ManagerDeviceMenu.py
++++ b/blueman/gui/manager/ManagerDeviceMenu.py
+@@ -1,6 +1,6 @@
+ # coding=utf-8
+ import logging
+-from locale import bind_textdomain_codeset
++#from locale import bind_textdomain_codeset
+ from operator import itemgetter
+ from blueman.Constants import UI_PATH
+ from blueman.Functions import create_menuitem, e_
+@@ -357,7 +357,7 @@ def on_response(dialog, response_id):
+ 
+             builder = Gtk.Builder()
+             builder.set_translation_domain("blueman")
+-            bind_textdomain_codeset("blueman", "UTF-8")
++#            bind_textdomain_codeset("blueman", "UTF-8")
+             builder.add_from_file(UI_PATH + "/rename-device.ui")
+             dialog = builder.get_object("dialog")
+             dialog.set_transient_for(self.Blueman)
+diff --git a/blueman/main/Manager.py b/blueman/main/Manager.py
+index 610a895b..73f61cba 100644
+--- a/blueman/main/Manager.py
++++ b/blueman/main/Manager.py
+@@ -1,6 +1,6 @@
+ # coding=utf-8
+ import logging
+-from locale import bind_textdomain_codeset
++#from locale import bind_textdomain_codeset
+ 
+ import blueman.bluez as bluez
+ from blueman.Functions import *
+@@ -34,7 +34,7 @@ def __init__(self):
+ 
+         self.Builder = Gtk.Builder()
+         self.Builder.set_translation_domain("blueman")
+-        bind_textdomain_codeset("blueman", "UTF-8")
++#        bind_textdomain_codeset("blueman", "UTF-8")
+         self.Builder.add_from_file(UI_PATH + "/manager-main.ui")
+ 
+         grid = self.Builder.get_object("grid")
+diff --git a/blueman/main/Sendto.py b/blueman/main/Sendto.py
+index 3a93c0d9..d5430369 100644
+--- a/blueman/main/Sendto.py
++++ b/blueman/main/Sendto.py
+@@ -1,7 +1,7 @@
+ # coding=utf-8
+ import time
+ import logging
+-from locale import bind_textdomain_codeset
++#from locale import bind_textdomain_codeset
+ from gettext import ngettext
+ 
+ import gi
+@@ -45,7 +45,7 @@ def __init__(self, device, adapter_path, files):
+         self.b_cancel.connect("clicked", self.on_cancel)
+ 
+         self.Builder = Gtk.Builder(translation_domain="blueman")
+-        bind_textdomain_codeset("blueman", "UTF-8")
++#        bind_textdomain_codeset("blueman", "UTF-8")
+         self.Builder.add_from_file(UI_PATH + "/send-dialog.ui")
+ 
+         grid = self.Builder.get_object("sendto")
+diff --git a/blueman/main/applet/BluezAgent.py b/blueman/main/applet/BluezAgent.py
+index 89ff0f8f..b3f854b8 100644
+--- a/blueman/main/applet/BluezAgent.py
++++ b/blueman/main/applet/BluezAgent.py
+@@ -1,7 +1,7 @@
+ # coding=utf-8
+ import os.path
+ import logging
+-from locale import bind_textdomain_codeset
++#from locale import bind_textdomain_codeset
+ from html import escape
+ import random
+ from xml.etree import ElementTree
+@@ -111,7 +111,7 @@ def on_insert_text(editable, new_text, new_text_length, position):
+         builder = Gtk.Builder()
+         builder.add_from_file(UI_PATH + "/applet-passkey.ui")
+         builder.set_translation_domain("blueman")
+-        bind_textdomain_codeset("blueman", "UTF-8")
++#        bind_textdomain_codeset("blueman", "UTF-8")
+         dialog = builder.get_object("dialog")
+ 
+         dialog.props.icon_name = "blueman"
+diff --git a/blueman/plugins/applet/NetUsage.py b/blueman/plugins/applet/NetUsage.py
+index b2300a58..44ccd531 100644
+--- a/blueman/plugins/applet/NetUsage.py
++++ b/blueman/plugins/applet/NetUsage.py
+@@ -5,7 +5,7 @@
+ import datetime
+ import gettext
+ import logging
+-from locale import bind_textdomain_codeset
++#from locale import bind_textdomain_codeset
+ 
+ from blueman.Functions import *
+ from blueman.Constants import *
+@@ -109,7 +109,7 @@ def __init__(self, plugin):
+         builder = Gtk.Builder()
+         builder.add_from_file(UI_PATH + "/net-usage.ui")
+         builder.set_translation_domain("blueman")
+-        bind_textdomain_codeset("blueman", "UTF-8")
++#        bind_textdomain_codeset("blueman", "UTF-8")
+ 
+         self.dialog = builder.get_object("dialog")
+         self.dialog.connect("response", self.on_response)
+diff --git a/blueman/plugins/manager/Notes.py b/blueman/plugins/manager/Notes.py
+index 855dfbb1..b730c223 100644
+--- a/blueman/plugins/manager/Notes.py
++++ b/blueman/plugins/manager/Notes.py
+@@ -1,5 +1,5 @@
+ import datetime
+-from gettext import bind_textdomain_codeset
++#from gettext import bind_textdomain_codeset
+ from tempfile import NamedTemporaryFile
+ 
+ from blueman.Functions import create_menuitem, launch, UI_PATH
+@@ -35,7 +35,7 @@ def send_note_cb(dialog, response_id, device_address, text_view):
+ def send_note(device, parent):
+     builder = Gtk.Builder()
+     builder.set_translation_domain('blueman')
+-    bind_textdomain_codeset('blueman', 'UTF-8')
++#    bind_textdomain_codeset('blueman', 'UTF-8')
+     builder.add_from_file(UI_PATH + '/note.ui')
+     dialog = builder.get_object('dialog')
+     dialog.set_transient_for(parent)
+diff --git a/blueman/plugins/services/Network.py b/blueman/plugins/services/Network.py
+index 67e37821..695be0c4 100644
+--- a/blueman/plugins/services/Network.py
++++ b/blueman/plugins/services/Network.py
+@@ -1,6 +1,6 @@
+ # coding=utf-8
+ from random import randint
+-from locale import bind_textdomain_codeset
++#from locale import bind_textdomain_codeset
+ import logging
+ import ipaddress
+ 
+@@ -26,7 +26,7 @@ def on_load(self, container):
+ 
+         self.Builder = Gtk.Builder()
+         self.Builder.set_translation_domain("blueman")
+-        bind_textdomain_codeset("blueman", "UTF-8")
++#        bind_textdomain_codeset("blueman", "UTF-8")
+         self.Builder.add_from_file(UI_PATH + "/services-network.ui")
+         self.widget = self.Builder.get_object("network_frame")
+ 
+diff --git a/blueman/plugins/services/Transfer.py b/blueman/plugins/services/Transfer.py
+index cd92ef90..9aad7989 100644
+--- a/blueman/plugins/services/Transfer.py
++++ b/blueman/plugins/services/Transfer.py
+@@ -1,5 +1,5 @@
+ # coding=utf-8
+-from locale import bind_textdomain_codeset
++#from locale import bind_textdomain_codeset
+ import logging
+ 
+ from blueman.Constants import *
+@@ -19,7 +19,7 @@ def on_load(self, container):
+ 
+         self.Builder = Gtk.Builder()
+         self.Builder.set_translation_domain("blueman")
+-        bind_textdomain_codeset("blueman", "UTF-8")
++#        bind_textdomain_codeset("blueman", "UTF-8")
+         self.Builder.add_from_file(UI_PATH + "/services-transfer.ui")
+         self.widget = self.Builder.get_object("transfer")
+ 
+

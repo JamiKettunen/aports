@@ -1,0 +1,38 @@
+# Contributor: Jami Kettunen <jami.kettunen@protonmail.com>
+# Maintainer: Jami Kettunen <jami.kettunen@protonmail.com>
+pkgname=blueman
+pkgver=2.1.3
+pkgrel=0
+pkgdesc="GTK+ Bluetooth Manager"
+url="https://github.com/blueman-project/blueman"
+arch="all"
+license="GPL-2.0-or-later"
+depends="bluez bluez-libs dnsmasq gtk+3.0 libnma pulseaudio-bluez py3-cairo py3-gettext py3-gobject3"
+makedepends="bluez-dev cython intltool iproute2 py3-gobject3-dev py3-setuptools python3-dev"
+subpackages="$pkgname-doc $pkgname-lang $pkgname-static"
+source="
+	https://github.com/blueman-project/blueman/releases/download/$pkgver/blueman-$pkgver.tar.xz
+	0001-purge-gettext-bind_textdomain_codeset.patch
+"
+builddir="$srcdir/blueman-$pkgver"
+options="!check" # There isn't a test suite to run that I'm aware of.
+
+build() {
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--localstatedir=/var \
+		--libexecdir=/usr/lib/$pkgname \
+		--disable-schemas-compile
+	make
+}
+
+package() {
+	make prefix=/usr DESTDIR="$pkgdir" install
+}
+
+sha512sums="376007c6e857f0e10a4d5e4bc2a50f6d170d393389d3aa5d02728646bf27e2fe5c08fb835bb5432a980d2b6c70c348a0274015552be6229c15a89c34c0d105f2  blueman-2.1.3.tar.xz
+3fa14a32376dacd31a6c808097a48dbe90d9385b0a0c75759fdffb7addc3857c19b4f4f56ec4f415ed8b62ff4f1803ecb7a333edea76a53bff0a066ee2d122a5  0001-purge-gettext-bind_textdomain_codeset.patch"
